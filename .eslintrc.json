@@ -2,15 +2,11 @@
   "extends": "prettier",
   "overrides": [
     {
-      "files": ["public/**/*.js"],
-      "env": { "browser": true }
-    },
-    {
       "files": ["components/**/*.stories.tsx"],
       "extends": "plugin:storybook/recommended"
     },
     {
-      "files": ["**/{__tests__,__mocks__}/*.mjs"],
+      "files": ["**/__mocks__/*.mjs", "**/__tests__/*jest.mjs"],
       "env": { "jest": true }
     },
     {

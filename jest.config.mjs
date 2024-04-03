@@ -9,7 +9,7 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.mjs'],
   moduleDirectories: ['node_modules', '<rootDir>/'],
   testEnvironment: 'jest-environment-jsdom',
-  testMatch: ['**/__tests__/*.test.mjs'],
+  testMatch: ['**/__tests__/*.jest.mjs'],
   coverageReporters: ['json', 'json-summary'],
   reporters: ['default', 'jest-junit'],
   moduleNameMapper: {

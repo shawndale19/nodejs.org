@@ -1,8 +1,11 @@
+import { strictEqual, deepStrictEqual } from 'node:assert/strict';
+import { describe, it } from 'node:test';
+
 import {
   getDownloadCategory,
   mapCategoriesToTabs,
   formatDropdownItems,
-} from '@/util/downloadUtils';
+} from '@/util/downloadUtils.ts';
 
 describe('formatDropdownItems', () => {
   it('should format dropdown items correctly', () => {
@@ -13,15 +16,13 @@ describe('formatDropdownItems', () => {
     const disabledItems = ['item2'];
     const icons = { item1: 'icon' };
     const defaultIcon = 'defaultIcon';
-
     const result = formatDropdownItems({
       items: items,
       disabledItems: disabledItems,
       icons: icons,
       defaultIcon: defaultIcon,
     });
-
-    expect(result).toEqual([
+    const expected = [
       { value: 'item1', label: 'Item 1', disabled: false, iconImage: 'icon' },
       {
         value: 'item2',
@@ -29,7 +30,9 @@ describe('formatDropdownItems', () => {
         disabled: true,
         iconImage: 'defaultIcon',
       },
-    ]);
+    ];
+
+    deepStrictEqual(result, expected);
   });
 
   it('should mark all items as disabled when all items are in the disabledItems list', () => {
@@ -38,16 +41,26 @@ describe('formatDropdownItems', () => {
       { value: 'item2', label: 'Item 2' },
     ];
     const disabledItems = ['item1', 'item2'];
-
     const result = formatDropdownItems({
       items: items,
       disabledItems: disabledItems,
     });
+    const expected = [
+      {
+        value: 'item1',
+        label: 'Item 1',
+        disabled: true,
+        iconImage: undefined,
+      },
+      {
+        value: 'item2',
+        label: 'Item 2',
+        disabled: true,
+        iconImage: undefined,
+      },
+    ];
 
-    expect(result).toEqual([
-      { value: 'item1', label: 'Item 1', disabled: true },
-      { value: 'item2', label: 'Item 2', disabled: true },
-    ]);
+    deepStrictEqual(result, expected);
   });
 
   it('should not mark any items as disabled when disabledItems list is empty', () => {
@@ -55,13 +68,23 @@ describe('formatDropdownItems', () => {
       { value: 'item1', label: 'Item 1' },
       { value: 'item2', label: 'Item 2' },
     ];
-
     const result = formatDropdownItems({ items: items });
+    const expected = [
+      {
+        value: 'item1',
+        label: 'Item 1',
+        disabled: false,
+        iconImage: undefined,
+      },
+      {
+        value: 'item2',
+        label: 'Item 2',
+        disabled: false,
+        iconImage: undefined,
+      },
+    ];
 
-    expect(result).toEqual([
-      { value: 'item1', label: 'Item 1', disabled: false },
-      { value: 'item2', label: 'Item 2', disabled: false },
-    ]);
+    deepStrictEqual(result, expected);
   });
 });
 
@@ -69,31 +92,35 @@ describe('getDownloadCategory', () => {
   it('should return correct category information for /download/current', () => {
     const result = getDownloadCategory('/download/current');
 
-    expect(result).toEqual({
+    const expected = {
       page: 'download',
       category: 'download',
       subCategory: 'current',
-    });
+    };
+
+    deepStrictEqual(result, expected);
   });
 
   it('should return correct category information for /download/category/subcategory', () => {
     const result = getDownloadCategory('/download/category/subcategory');
-
-    expect(result).toEqual({
+    const expected = {
       page: 'download',
       category: 'category',
       subCategory: 'subcategory',
-    });
+    };
+
+    deepStrictEqual(result, expected);
   });
 
   it('should return correct category information for /download/category', () => {
     const result = getDownloadCategory('/download/category');
-
-    expect(result).toEqual({
+    const expected = {
       page: 'download',
       category: 'category',
       subCategory: undefined,
-    });
+    };
+
+    deepStrictEqual(result, expected);
   });
 });
 
@@ -113,15 +140,16 @@ describe('mapCategoriesToTabs', () => {
       ],
       subCategory: 'current',
     });
-
-    expect(result).toEqual([
+    const expected = [
       { key: 'download', label: 'Download', link: '/download/current' },
       {
         key: 'package-manager',
         label: 'Package Manager',
         link: '/download/package-manager/current',
       },
-    ]);
+    ];
+
+    deepStrictEqual(result, expected);
   });
 
   it('should return correct tabs for download page when subcategory not defined', () => {
@@ -138,14 +166,15 @@ describe('mapCategoriesToTabs', () => {
         },
       ],
     });
-
-    expect(result).toEqual([
+    const expected = [
       { key: 'download', label: 'Download', link: '/download' },
       {
         key: 'package-manager',
         label: 'Package Manager',
         link: '/download/package-manager',
       },
-    ]);
+    ];
+
+    strictEqual(JSON.stringify(result), JSON.stringify(expected));
   });
 });

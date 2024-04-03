@@ -1,4 +1,7 @@
-import { assignClientContext } from '@/util/assignClientContext';
+import { deepEqual } from 'node:assert/strict';
+import { describe, it } from 'node:test';
+
+import { assignClientContext } from '@/util/assignClientContext.ts';
 
 const mockContext = {
   frontmatter: { title: 'Sample Title' },
@@ -17,27 +20,24 @@ describe('assignClientContext', () => {
   it('should assign properties to the client context', () => {
     const result = assignClientContext(mockContext);
 
-    expect(result.frontmatter).toEqual(mockContext.frontmatter);
-    expect(result.pathname).toEqual(mockContext.pathname);
-    expect(result.headings).toEqual(mockContext.headings);
-    expect(result.readingTime).toEqual(mockContext.readingTime);
-    expect(result.filename).toEqual(mockContext.filename);
-
-    expect(result).toEqual(mockContext);
+    deepEqual(result, mockContext);
   });
 
   it('should use default values for missing properties', () => {
     const result = assignClientContext({});
+    const expected = {
+      frontmatter: {},
+      pathname: '',
+      headings: [],
+      readingTime: {
+        text: '',
+        minutes: 0,
+        time: 0,
+        words: 0,
+      },
+      filename: '',
+    };
 
-    expect(result.frontmatter).toEqual({});
-    expect(result.pathname).toEqual('');
-    expect(result.headings).toEqual([]);
-    expect(result.readingTime).toEqual({
-      text: '',
-      minutes: 0,
-      time: 0,
-      words: 0,
-    });
-    expect(result.filename).toEqual('');
+    deepEqual(result, expected);
   });
 });

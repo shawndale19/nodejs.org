@@ -1,4 +1,7 @@
-import { getNodeDownloadUrl } from '@/util/getNodeDownloadUrl';
+import { strictEqual } from 'node:assert/strict';
+import { describe, it } from 'node:test';
+
+import { getNodeDownloadUrl } from '@/util/getNodeDownloadUrl.ts';
 
 const version = 'v18.16.0';
 
@@ -8,7 +11,7 @@ describe('getNodeDownloadUrl', () => {
     const bitness = 86;
     const expectedUrl = 'https://nodejs.org/dist/v18.16.0/node-v18.16.0.pkg';
 
-    expect(getNodeDownloadUrl(version, os, bitness)).toBe(expectedUrl);
+    strictEqual(getNodeDownloadUrl(version, os, bitness), expectedUrl);
   });
 
   it('returns the correct download URL for Windows (32-bit)', () => {
@@ -17,7 +20,7 @@ describe('getNodeDownloadUrl', () => {
     const expectedUrl =
       'https://nodejs.org/dist/v18.16.0/node-v18.16.0-x86.msi';
 
-    expect(getNodeDownloadUrl(version, os, bitness)).toBe(expectedUrl);
+    strictEqual(getNodeDownloadUrl(version, os, bitness), expectedUrl);
   });
 
   it('returns the correct download URL for Windows (64-bit)', () => {
@@ -26,7 +29,7 @@ describe('getNodeDownloadUrl', () => {
     const expectedUrl =
       'https://nodejs.org/dist/v18.16.0/node-v18.16.0-x64.msi';
 
-    expect(getNodeDownloadUrl(version, os, bitness)).toBe(expectedUrl);
+    strictEqual(getNodeDownloadUrl(version, os, bitness), expectedUrl);
   });
 
   it('returns the default download URL for other operating systems', () => {
@@ -34,6 +37,6 @@ describe('getNodeDownloadUrl', () => {
     const bitness = 86;
     const expectedUrl = 'https://nodejs.org/dist/v18.16.0/node-v18.16.0.tar.gz';
 
-    expect(getNodeDownloadUrl(version, os, bitness)).toBe(expectedUrl);
+    strictEqual(getNodeDownloadUrl(version, os, bitness), expectedUrl);
   });
 });
